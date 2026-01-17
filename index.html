@@ -6,57 +6,77 @@
     <title>退休年齡試算器</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-5">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">退休年齡試算器 (4% 規則)</h2>
+<body class="bg-gray-100 p-5 md:p-10">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">退休年齡試算器 (4% 規則)</h2>
         
-        <div class="grid grid-cols-1 gap-4">
-            <div><label class="block text-sm font-medium">通膨率 (預設 2%)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">投資年報酬率 (預設 6%)</label><input id="D2" type="number" value="0.06" step="0.01" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">今年度生活費</label><input id="E2" type="number" value="600000" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">每年計畫投入金額 (名目)</label><input id="F2" type="number" value="300000" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">目前年齡</label><input id="H2" type="number" value="30" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">目前總資產 (現金或現有投資金額)</label><input id="ETF_K3" type="number" value="500000" class="w-full border p-2 rounded"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="block text-sm font-medium text-gray-700">通膨率 (預期物價漲幅)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">投資年報酬率 (長期平均)</label><input id="D2" type="number" value="0.06" step="0.01" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">今年度生活費 (總支出)</label><input id="E2" type="number" value="600000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">每年計畫投入金額 (定存/定額)</label><input id="F2" type="number" value="300000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">目前年齡</label><input id="H2" type="number" value="30" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">目前總資產 (現有現金/部位)</label><input id="ETF_K3" type="number" value="500000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
         </div>
 
-        <button onclick="calculate()" class="w-full mt-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">開始計算</button>
+        <button onclick="calculate()" class="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 shadow-lg">開始計算退休年齡</button>
 
-        <div id="result" class="mt-6 p-4 bg-blue-50 text-blue-800 rounded-lg hidden text-center">
-            <span class="text-lg">預計退休年齡：</span>
-            <span id="retireAge" class="text-3xl font-bold text-blue-600">--</span> 歲
+        <div id="result" class="mt-8 p-6 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl hidden text-center shadow-inner">
+            <span class="text-xl">預計退休年齡為：</span>
+            <div class="mt-2"><span id="retireAge" class="text-5xl font-extrabold text-blue-600">--</span> <span class="text-2xl font-bold">歲</span></div>
+            <p class="mt-4 text-sm text-blue-600 opacity-80">* 屆時資產規模已足以支撐受通膨調整後的生活費</p>
+        </div>
+
+        <hr class="my-10 border-gray-200">
+
+        <div class="text-sm text-gray-600 leading-relaxed">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                試算邏輯與假設說明
+            </h3>
+            
+            <div class="space-y-4">
+                <section>
+                    <p class="font-semibold text-gray-700">1. 核心理論：4% 規則 (Trinity Study)</p>
+                    <p>本試算採用提領率 4% 作為退休基準。意即當你的總資產達到「退休後首年生活費」的 25 倍時，理論上每年提領 4% 支應生活，資產將有極高機率維持 30 年以上不枯竭。</p>
+                </section>
+
+                <section>
+                    <p class="font-semibold text-gray-700">2. 計算假設</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>通膨調整：</strong>考慮到未來物價上漲，系統會自動根據「通膨率」調升未來的需求資產。</li>
+                        <li><strong>資產成長：</strong>現有資產與每年新投入的資金，皆假設以「年報酬率」複利成長。</li>
+                        <li><strong>投入金額：</strong>假設每年投入金額固定（名目金額），不隨薪資調幅改變。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <p class="font-semibold text-gray-700">3. 使用限制與提醒</p>
+                    <ul class="list-disc ml-5 space-y-1 text-red-700/80">
+                        <li><strong>市場波動：</strong>試算使用「平均」報酬率，未考慮真實市場的年度震盪（序列風險）。</li>
+                        <li><strong>一次性開支：</strong>未計算換屋、醫療或子女教育等大型額外支出。</li>
+                        <li><strong>稅務與勞保：</strong>本計算純屬個人資產估算，未計入勞工退休金或可能的投資稅收。</li>
+                    </ul>
+                </section>
+                
+                <p class="text-xs text-gray-400 text-right mt-6 italic">本試算僅供參考，實際財務規劃請諮詢專業理財顾问。</p>
+            </div>
         </div>
     </div>
 
     <script>
-        /**
-         * 簡化後的退休計算邏輯
-         * 移除 D10 (股價) 與 ETF_G3 (股數)
-         */
         function RetireYearSol(C2, D2, E2, F2, H2, ETF_K3, discount = 1) {
             var withdrawRate = 0.04;               
             var A2 = H2;                           
             var maxAge = 100;                      
             var step = 0.1;                        
-
             var guard = 0;
+
             while (true) {
                 var n = A2 - H2;
-
-                // 需求資產 = 生活費 * (1+通膨)^n / 0.04
                 var Need = (E2 * Math.pow(1 + C2, n)) / withdrawRate;
-
-                // 現有資產成長 = 目前總資產 * (1+報酬率)^n
                 var cash_ret = ETF_K3 * Math.pow(1 + D2, n);
-
-                // 每年定投本利和
-                var inv_ret = 0;
-                if (D2 === 0) {
-                    inv_ret = F2 * n;
-                } else {
-                    inv_ret = F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
-                }
-
-                // 總資產
+                var inv_ret = (D2 === 0) ? F2 * n : F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
                 var save = (cash_ret + inv_ret) * discount;
 
                 if (save >= Need) return A2.toFixed(1);
@@ -77,7 +97,7 @@
                 parseFloat(document.getElementById('ETF_K3').value)
             );
             document.getElementById('result').classList.remove('hidden');
-            document.getElementById('retireAge').innerText = result;
+            document.getElementById('retireAge').innerText = (result >= 100) ? "無法達成" : result;
         }
     </script>
 </body>
