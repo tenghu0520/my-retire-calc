@@ -2,7 +2,6 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta charset="UTF-8"> <title>退休試算器</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>退休年齡試算器</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,11 +14,9 @@
             <div><label class="block text-sm font-medium">通膨率 (預設 2%)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded"></div>
             <div><label class="block text-sm font-medium">投資年報酬率 (預設 6%)</label><input id="D2" type="number" value="0.06" step="0.01" class="w-full border p-2 rounded"></div>
             <div><label class="block text-sm font-medium">今年度生活費</label><input id="E2" type="number" value="600000" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">目前股價/單位價格</label><input id="D10" type="number" value="150" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">每年計畫投入金額</label><input id="F2" type="number" value="300000" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">目前持有股數</label><input id="ETF_G3" type="number" value="10000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">每年計畫投入金額 (名目)</label><input id="F2" type="number" value="300000" class="w-full border p-2 rounded"></div>
             <div><label class="block text-sm font-medium">目前年齡</label><input id="H2" type="number" value="30" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium">目前現金部位</label><input id="ETF_K3" type="number" value="500000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">目前總資產 (現金或現有投資金額)</label><input id="ETF_K3" type="number" value="500000" class="w-full border p-2 rounded"></div>
         </div>
 
         <button onclick="calculate()" class="w-full mt-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">開始計算</button>
@@ -31,22 +28,39 @@
     </div>
 
     <script>
-        function RetireYearSol(C2, D2, E2, D10, F2, ETF_G3, H2, ETF_K3, discount = 1) {
-            var withdrawRate = 0.04;
-            var A2 = H2;
-            var maxAge = 100;
-            var step = 0.1;
+        /**
+         * 簡化後的退休計算邏輯
+         * 移除 D10 (股價) 與 ETF_G3 (股數)
+         */
+        function RetireYearSol(C2, D2, E2, F2, H2, ETF_K3, discount = 1) {
+            var withdrawRate = 0.04;               
+            var A2 = H2;                           
+            var maxAge = 100;                      
+            var step = 0.1;                        
+
             var guard = 0;
-            
             while (true) {
                 var n = A2 - H2;
+
+                // 需求資產 = 生活費 * (1+通膨)^n / 0.04
                 var Need = (E2 * Math.pow(1 + C2, n)) / withdrawRate;
+
+                // 現有資產成長 = 目前總資產 * (1+報酬率)^n
                 var cash_ret = ETF_K3 * Math.pow(1 + D2, n);
-                var current_inv_ret = ETF_G3 * D10 * Math.pow(1 + D2, n);
-                var inv_ret = (D2 === 0) ? F2 * n : F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
-                var save = (cash_ret + current_inv_ret + inv_ret) * discount;
+
+                // 每年定投本利和
+                var inv_ret = 0;
+                if (D2 === 0) {
+                    inv_ret = F2 * n;
+                } else {
+                    inv_ret = F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
+                }
+
+                // 總資產
+                var save = (cash_ret + inv_ret) * discount;
 
                 if (save >= Need) return A2.toFixed(1);
+
                 A2 += step;
                 guard++;
                 if (A2 > maxAge || guard > 2000) return maxAge;
@@ -58,9 +72,7 @@
                 parseFloat(document.getElementById('C2').value),
                 parseFloat(document.getElementById('D2').value),
                 parseFloat(document.getElementById('E2').value),
-                parseFloat(document.getElementById('D10').value),
                 parseFloat(document.getElementById('F2').value),
-                parseFloat(document.getElementById('ETF_G3').value),
                 parseFloat(document.getElementById('H2').value),
                 parseFloat(document.getElementById('ETF_K3').value)
             );
