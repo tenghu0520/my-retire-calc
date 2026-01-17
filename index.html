@@ -11,15 +11,15 @@
         <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">退休年齡與資產試算器 (3% 規則)</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><label class="block text-sm font-medium text-gray-700">通膨率 (預期物價漲幅)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium text-gray-700">投資年報酬率 (長期平均)</label><input id="D2" type="number" value="0.08" step="0.01" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium text-gray-700">今年度生活費 (總支出)</label><input id="E2" type="number" value="1000000" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium text-gray-700">每年計畫投入金額</label><input id="F2" type="number" value="1000000" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium text-gray-700">目前年齡</label><input id="H2" type="number" value="40" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-sm font-medium text-gray-700">目前總資產</label><input id="ETF_K3" type="number" value="2000000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium text-gray-700">通膨率 (預期物價漲幅)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">投資年報酬率 (長期平均)</label><input id="D2" type="number" value="0.08" step="0.01" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">今年度生活費 (總支出)</label><input id="E2" type="number" value="1000000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">每年計畫投入金額</label><input id="F2" type="number" value="1000000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">目前年齡</label><input id="H2" type="number" value="40" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div><label class="block text-sm font-medium text-gray-700">目前總資產</label><input id="ETF_K3" type="number" value="2000000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
         </div>
 
-        <button onclick="calculate()" class="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg">開始計算</button>
+        <button onclick="calculate()" class="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 shadow-lg">開始計算</button>
 
         <div id="result" class="mt-8 p-6 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl hidden shadow-inner">
             <div class="text-center">
@@ -45,22 +45,43 @@
                 <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"></path></svg>
                 試算邏輯與假設說明
             </h3>
-            <div class="space-y-4">
+            
+            <div class="space-y-6">
                 <section>
-                    <p class="font-semibold text-gray-700">1. 改良式 3% 永續提領規則</p>
+                    <p class="font-bold text-gray-800 text-base mb-1">1. 改良式 3% 永續提領規則</p>
                     <p>本試算採用更保守的 3% 提領率（即資產需達生活費的 33.3 倍）。相較於傳統 4% 規則，3% 更有機會在支應生活的同時，讓本金隨通膨成長，達到「不動用實質本金」的目標。</p>
                 </section>
+
                 <section>
-                    <p class="font-semibold text-gray-700">2. 退休資產計算</p>
-                    <p>計算公式會同時考慮「複利增值」與「通膨侵蝕」。當您的總資產足以支撐當下受通膨影響後的生活費（生活費 ÷ 0.03）時，即視為達成退休目標。</p>
+                    <p class="font-bold text-gray-800 text-base mb-1">2. 計算假設</p>
+                    <ul class="list-disc ml-5 space-y-2">
+                        <li><span class="font-semibold text-gray-700">通膨調整：</span>考慮到未來物價上漲，系統會自動根據「通膨率」調升未來的需求資產。</li>
+                        <li><span class="font-semibold text-gray-700">資產成長：</span>現有資產與每年新投入的資金，皆假設以「年報酬率」複利成長。</li>
+                        <li><span class="font-semibold text-gray-700">投入金額：</span>假設每年投入金額固定（名目金額），不隨薪資調幅改變。</li>
+                    </ul>
                 </section>
+
+                <section class="bg-red-50 p-4 rounded-lg border border-red-100">
+                    <p class="font-bold text-red-800 text-base mb-1">3. 使用限制與提醒</p>
+                    <ul class="list-disc ml-5 space-y-2 text-red-700">
+                        <li><span class="font-semibold">市場波動：</span>試算使用「平均」報酬率，未考慮真實市場的年度震盪（序列風險）。</li>
+                        <li><span class="font-semibold">一次性開支：</span>未計算換屋、醫療或子女教育等大型額外支出。</li>
+                        <li><span class="font-semibold">稅務與勞保：</span>本計算純屬個人資產估算，未計入勞工退休金或可能的投資稅收。</li>
+                    </ul>
+                </section>
+                
+                <p class="text-xs text-gray-400 text-right mt-6 italic">本試算僅供參考，實際財務規劃請諮詢專業理財顧問。</p>
             </div>
         </div>
     </div>
 
     <script>
+        /**
+         * 核心計算函式
+         * 回傳：退休年齡、退休時總資產、屆時生活費
+         */
         function RetireYearSol(C2, D2, E2, F2, H2, ETF_K3) {
-            var withdrawRate = 0.03; // 採用 3% 規則
+            var withdrawRate = 0.03; // 設定提領率為 3%
             var A2 = H2;
             var maxAge = 100;
             var step = 0.1;
@@ -68,8 +89,8 @@
 
             while (true) {
                 var n = A2 - H2;
-                var currentExpense = E2 * Math.pow(1 + C2, n); // 屆時的生活費
-                var Need = currentExpense / withdrawRate;      // 屆時需要的資產總額
+                var currentExpense = E2 * Math.pow(1 + C2, n); // 計算屆時受通膨調整後的生活費
+                var Need = currentExpense / withdrawRate;      // 計算達成退休所需的資產規模
                 
                 var cash_ret = ETF_K3 * Math.pow(1 + D2, n);
                 var inv_ret = (D2 === 0) ? F2 * n : F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
