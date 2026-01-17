@@ -3,20 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>退休試算器 (3% 永續提領版)</title>
+    <title>退休試算與資產配置模擬器</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-5 md:p-10">
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">退休年齡與資產試算器 (3% 規則)</h2>
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">退休試算與資產配置模擬器 (3% 規則)</h2>
         
+        <div class="mb-8">
+            <label class="block text-sm font-bold text-gray-700 mb-3">快捷資產配置模擬：</label>
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="setAllocation(0.1, '積極型 (全股票)')" class="text-xs bg-red-100 hover:bg-red-200 text-red-700 py-2 rounded border border-red-200 transition">積極型<br>(報酬 10%)</button>
+                <button onclick="setAllocation(0.07, '穩健型 (股債平衡)')" class="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 py-2 rounded border border-blue-200 transition">穩健型<br>(報酬 7%)</button>
+                <button onclick="setAllocation(0.04, '保守型 (多債少股)')" class="text-xs bg-green-100 hover:bg-green-200 text-green-700 py-2 rounded border border-green-200 transition">保守型<br>(報酬 4%)</button>
+            </div>
+            <p id="allocationHint" class="text-center text-xs text-gray-500 mt-2">點擊上方按鈕可快速帶入參考報酬率</p>
+        </div>
+
+        <hr class="mb-8">
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><label class="block text-sm font-medium text-gray-700">通膨率 (預期物價漲幅)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
-            <div><label class="block text-sm font-medium text-gray-700">投資年報酬率 (長期平均)</label><input id="D2" type="number" value="0.08" step="0.01" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
-            <div><label class="block text-sm font-medium text-gray-700">今年度生活費 (總支出)</label><input id="E2" type="number" value="1000000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
-            <div><label class="block text-sm font-medium text-gray-700">每年計畫投入金額</label><input id="F2" type="number" value="1000000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
-            <div><label class="block text-sm font-medium text-gray-700">目前年齡</label><input id="H2" type="number" value="40" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
-            <div><label class="block text-sm font-medium text-gray-700">目前總資產</label><input id="ETF_K3" type="number" value="2000000" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm"></div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">通膨率 (預期物價漲幅)</label>
+                <input id="C2" type="number" value="0.02" step="0.01" oninput="updateRealRate()" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">投資年報酬率 (長期平均)</label>
+                <input id="D2" type="number" value="0.08" step="0.01" oninput="updateRealRate()" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 shadow-sm">
+            </div>
+            <div class="md:col-span-2 bg-gray-50 p-3 rounded-lg flex justify-between items-center border border-gray-200">
+                <span class="text-sm font-medium text-gray-600">預估實質報酬率 (扣除通膨後)：</span>
+                <span id="realRateDisplay" class="text-lg font-bold">--</span>
+            </div>
+            <div><label class="block text-sm font-medium text-gray-700">今年度生活費 (總支出)</label><input id="E2" type="number" value="1000000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium text-gray-700">每年計畫投入金額</label><input id="F2" type="number" value="1000000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium text-gray-700">目前年齡</label><input id="H2" type="number" value="40" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium text-gray-700">目前總資產</label><input id="ETF_K3" type="number" value="2000000" class="w-full border p-2 rounded"></div>
         </div>
 
         <button onclick="calculate()" class="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 shadow-lg">開始計算</button>
@@ -41,41 +63,59 @@
         <hr class="my-10 border-gray-200">
 
         <div class="text-sm text-gray-600 leading-relaxed">
-            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"></path></svg>
-                試算邏輯與假設說明
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center text-blue-600">
+                策略建議與資產配置觀念
             </h3>
             
             <div class="space-y-6">
-                <section>
-                    <p class="font-bold text-gray-800 text-base mb-1">1. 改良式 3% 永續提領規則</p>
-                    <p>本試算採用更保守的 3% 提領率（即資產需達生活費的 33.3 倍）。相較於傳統 4% 規則，3% 更有機會在支應生活的同時，讓本金隨通膨成長，達到「不動用實質本金」的目標。</p>
-                </section>
-
-                <section>
-                    <p class="font-bold text-gray-800 text-base mb-1">2. 計算假設</p>
-                    <ul class="list-disc ml-5 space-y-2">
-                        <li><span class="font-semibold text-gray-700">通膨調整：</span>考慮到未來物價上漲，系統會自動根據「通膨率」調升未來的需求資產。</li>
-                        <li><span class="font-semibold text-gray-700">資產成長：</span>現有資產與每年新投入的資金，皆假設以「年報酬率」複利成長。</li>
-                        <li><span class="font-semibold text-gray-700">投入金額：</span><span class="text-blue-700 font-medium text-sm">本試算假設每年投入金額固定。若您的定投金額隨薪資同步調升，實際退休時間可能會提早。</span></li>
-                    </ul>
-                </section>
-
-                <section class="bg-red-50 p-4 rounded-lg border border-red-100">
-                    <p class="font-bold text-red-800 text-base mb-1">3. 使用限制與提醒</p>
-                    <ul class="list-disc ml-5 space-y-2 text-red-700">
-                        <li><span class="font-semibold">市場波動：</span>試算使用「平均」報酬率，未考慮真實市場的年度震盪（序列風險）。</li>
-                        <li><span class="font-semibold">一次性開支：</span>未計算換屋、醫療或子女教育等大型額外支出。</li>
-                        <li><span class="font-semibold">稅務與勞保：</span>本計算純屬個人資產估算，未計入勞工退休金或可能的投資稅收。</li>
-                    </ul>
-                </section>
                 
-                <p class="text-xs text-gray-400 text-right mt-6 italic">本試算僅供參考，實際財務規劃請諮詢專業理財顧問。</p>
+                <section>
+                    <p class="font-bold text-gray-800 text-base mb-1 text-red-600">1. 配置與報酬的權衡</p>
+                    <p>歷史數據顯示，全股票配置(積極型)長期年化報酬約 10%，但過程中可能面臨 30-50% 的回撤。穩健型(60/40 股債配置)則能將波動降至 15-20%，並提供約 7% 報酬。選擇適合您心理素質的配置，是提早退休的關鍵。</p>
+                </section>
+
+                <section>
+                    <p class="font-bold text-gray-800 text-base mb-1">2. 為什麼選擇 3% 規則？</p>
+                    <p>相對於傳統 4% 規則，3% 規則能更有效應對提早退休可能長達 50 年的提領期，並在扣除通膨後，極大化「不動用本金」的機率。</p>
+                </section>
+
+                <section class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <p class="font-bold text-blue-800 text-base mb-1">💡 提早退休建議</p>
+                    <ul class="list-disc ml-5 space-y-2 text-blue-700">
+                        <li><span class="font-semibold">動態定投：</span>若您的定投金額隨薪資同步調升，實際退休時間可能會大幅提早。</li>
+                        <li><span class="font-semibold">現金緩衝：</span>退休時建議保留 2-3 年生活費現金，避免在股市大跌時變賣部位。</li>
+                    </ul>
+                </section>
             </div>
         </div>
     </div>
 
     <script>
+        // 快捷配置切換
+        function setAllocation(rate, label) {
+            document.getElementById('D2').value = rate;
+            document.getElementById('allocationHint').innerText = "當前已套用：" + label;
+            updateRealRate();
+            calculate(); // 自動重新計算
+        }
+
+        function updateRealRate() {
+            const inflation = parseFloat(document.getElementById('C2').value) || 0;
+            const returnRate = parseFloat(document.getElementById('D2').value) || 0;
+            const realRate = (returnRate - inflation) * 100;
+            
+            const display = document.getElementById('realRateDisplay');
+            display.innerText = realRate.toFixed(1) + "%";
+            
+            if (realRate > 0) {
+                display.className = "text-lg font-bold text-green-600";
+            } else if (realRate < 0) {
+                display.className = "text-lg font-bold text-red-600";
+            } else {
+                display.className = "text-lg font-bold text-gray-600";
+            }
+        }
+
         function RetireYearSol(C2, D2, E2, F2, H2, ETF_K3) {
             var withdrawRate = 0.03; 
             var A2 = H2;
@@ -129,6 +169,8 @@
                 document.getElementById('retireExpense').innerText = "--";
             }
         }
+
+        window.onload = updateRealRate;
     </script>
 </body>
 </html>
