@@ -1,88 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>退休年齡試算器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="zh-TW"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;退休年齡試算器&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body class="bg-gray-100 p-5"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-2xl font-bold mb-6 text-gray-800"&gt;退休年齡試算器 (4% 規則)&lt;/h2&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-1 gap-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;通膨率 (預設 2%)&lt;/label&gt;&lt;input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;投資年報酬率 (預設 6%)&lt;/label&gt;&lt;input id="D2" type="number" value="0.06" step="0.01" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;今年度生活費&lt;/label&gt;&lt;input id="E2" type="number" value="600000" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;目前股價/單位價格&lt;/label&gt;&lt;input id="D10" type="number" value="150" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;每年計畫投入金額&lt;/label&gt;&lt;input id="F2" type="number" value="300000" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;目前持有股數&lt;/label&gt;&lt;input id="ETF_G3" type="number" value="10000" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;目前年齡&lt;/label&gt;&lt;input id="H2" type="number" value="30" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;&lt;label class="block text-sm font-medium"&gt;目前現金部位&lt;/label&gt;&lt;input id="ETF_K3" type="number" value="500000" class="w-full border p-2 rounded"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button onclick="calculate()" class="w-full mt-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"&gt;開始計算&lt;/button&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="result" class="mt-6 p-4 bg-blue-50 text-blue-800 rounded-lg hidden text-center"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span class="text-lg"&gt;預計退休年齡：&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span id="retireAge" class="text-3xl font-bold text-blue-600"&gt;--&lt;/span&gt; 歲</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function RetireYearSol(C2, D2, E2, D10, F2, ETF_G3, H2, ETF_K3, discount = 1) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var withdrawRate = 0.04;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var A2 = H2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var maxAge = 100;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var step = 0.1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var guard = 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>while (true) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>var n = A2 - H2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>var Need = (E2 * Math.pow(1 + C2, n)) / withdrawRate;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>var cash_ret = ETF_K3 * Math.pow(1 + D2, n);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>var current_inv_ret = ETF_G3 * D10 * Math.pow(1 + D2, n);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>var inv_ret = (D2 === 0) ? F2 * n : F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>var save = (cash_ret + current_inv_ret + inv_ret) * discount;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (save &gt;= Need) return A2.toFixed(1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>A2 += step;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>guard++;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (A2 &gt; maxAge || guard &gt; 2000) return maxAge;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function calculate() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const result = RetireYearSol(</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('C2').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('D2').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('E2').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('D10').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('F2').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('ETF_G3').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('H2').value),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>parseFloat(document.getElementById('ETF_K3').value)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result').classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('retireAge').innerText = result;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<body class="bg-gray-100 p-5">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">退休年齡試算器 (4% 規則)</h2>
+        
+        <div class="grid grid-cols-1 gap-4">
+            <div><label class="block text-sm font-medium">通膨率 (預設 2%)</label><input id="C2" type="number" value="0.02" step="0.01" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">投資年報酬率 (預設 6%)</label><input id="D2" type="number" value="0.06" step="0.01" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">今年度生活費</label><input id="E2" type="number" value="600000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">目前股價/單位價格</label><input id="D10" type="number" value="150" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">每年計畫投入金額</label><input id="F2" type="number" value="300000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">目前持有股數</label><input id="ETF_G3" type="number" value="10000" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">目前年齡</label><input id="H2" type="number" value="30" class="w-full border p-2 rounded"></div>
+            <div><label class="block text-sm font-medium">目前現金部位</label><input id="ETF_K3" type="number" value="500000" class="w-full border p-2 rounded"></div>
+        </div>
+
+        <button onclick="calculate()" class="w-full mt-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">開始計算</button>
+
+        <div id="result" class="mt-6 p-4 bg-blue-50 text-blue-800 rounded-lg hidden text-center">
+            <span class="text-lg">預計退休年齡：</span>
+            <span id="retireAge" class="text-3xl font-bold text-blue-600">--</span> 歲
+        </div>
+    </div>
+
+    <script>
+        function RetireYearSol(C2, D2, E2, D10, F2, ETF_G3, H2, ETF_K3, discount = 1) {
+            var withdrawRate = 0.04;
+            var A2 = H2;
+            var maxAge = 100;
+            var step = 0.1;
+            var guard = 0;
+            
+            while (true) {
+                var n = A2 - H2;
+                var Need = (E2 * Math.pow(1 + C2, n)) / withdrawRate;
+                var cash_ret = ETF_K3 * Math.pow(1 + D2, n);
+                var current_inv_ret = ETF_G3 * D10 * Math.pow(1 + D2, n);
+                var inv_ret = (D2 === 0) ? F2 * n : F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
+                var save = (cash_ret + current_inv_ret + inv_ret) * discount;
+
+                if (save >= Need) return A2.toFixed(1);
+                A2 += step;
+                guard++;
+                if (A2 > maxAge || guard > 2000) return maxAge;
+            }
+        }
+
+        function calculate() {
+            const result = RetireYearSol(
+                parseFloat(document.getElementById('C2').value),
+                parseFloat(document.getElementById('D2').value),
+                parseFloat(document.getElementById('E2').value),
+                parseFloat(document.getElementById('D10').value),
+                parseFloat(document.getElementById('F2').value),
+                parseFloat(document.getElementById('ETF_G3').value),
+                parseFloat(document.getElementById('H2').value),
+                parseFloat(document.getElementById('ETF_K3').value)
+            );
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('retireAge').innerText = result;
+        }
+    </script>
 </body>
 </html>
