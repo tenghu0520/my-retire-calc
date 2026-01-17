@@ -57,7 +57,7 @@
                     <ul class="list-disc ml-5 space-y-2">
                         <li><span class="font-semibold text-gray-700">通膨調整：</span>考慮到未來物價上漲，系統會自動根據「通膨率」調升未來的需求資產。</li>
                         <li><span class="font-semibold text-gray-700">資產成長：</span>現有資產與每年新投入的資金，皆假設以「年報酬率」複利成長。</li>
-                        <li><span class="font-semibold text-gray-700">投入金額：</span>假設每年投入金額固定（名目金額），不隨薪資調幅改變。</li>
+                        <li><span class="font-semibold text-gray-700">投入金額：</span><span class="text-blue-700 font-medium text-sm">本試算假設每年投入金額固定。若您的定投金額隨薪資同步調升，實際退休時間可能會提早。</span></li>
                     </ul>
                 </section>
 
@@ -76,12 +76,8 @@
     </div>
 
     <script>
-        /**
-         * 核心計算函式
-         * 回傳：退休年齡、退休時總資產、屆時生活費
-         */
         function RetireYearSol(C2, D2, E2, F2, H2, ETF_K3) {
-            var withdrawRate = 0.03; // 設定提領率為 3%
+            var withdrawRate = 0.03; 
             var A2 = H2;
             var maxAge = 100;
             var step = 0.1;
@@ -89,8 +85,8 @@
 
             while (true) {
                 var n = A2 - H2;
-                var currentExpense = E2 * Math.pow(1 + C2, n); // 計算屆時受通膨調整後的生活費
-                var Need = currentExpense / withdrawRate;      // 計算達成退休所需的資產規模
+                var currentExpense = E2 * Math.pow(1 + C2, n); 
+                var Need = currentExpense / withdrawRate;      
                 
                 var cash_ret = ETF_K3 * Math.pow(1 + D2, n);
                 var inv_ret = (D2 === 0) ? F2 * n : F2 * (1 + D2) * (Math.pow(1 + D2, n) - 1) / D2;
